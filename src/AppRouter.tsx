@@ -10,18 +10,13 @@ import HomePage from "@/pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRouter: React.FC = () => {
-  const token = localStorage.getItem("accessToken");
-
   return (
     <Router>
       <Routes>
-        {/* Auth route */}
-        <Route
-          path="/auth"
-          element={token ? <Navigate to="/home" replace /> : <AuthPage />}
-        />
+        {/* Auth is always public */}
+        <Route path="/auth" element={<AuthPage />} />
 
-        {/* Home route with optional roleId */}
+        {/* Home is protected */}
         <Route
           path="/home/:roleId?"
           element={
@@ -31,8 +26,8 @@ const AppRouter: React.FC = () => {
           }
         />
 
-        {/* Default route */}
-        <Route path="*" element={<Navigate to="/auth" replace />} />
+        {/* Default → redirect to home, ProtectedRoute will handle auth */}
+        <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </Router>
   );

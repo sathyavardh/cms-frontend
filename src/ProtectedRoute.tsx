@@ -1,15 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [checked, setChecked] = useState(false);
-
-  useEffect(() => {
-    setChecked(true); // run only once on mount
-  }, []);
-
-  if (!checked) return null; // avoid flicker
-
   const token = localStorage.getItem("accessToken");
   const expiresAt = localStorage.getItem("expiresAt");
   const now = Date.now();

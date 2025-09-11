@@ -22,7 +22,7 @@ interface SignupResponse {
   };
 }
 
-// 🔑 Login function
+// Login function
 export const loginUser = async (
   emailId: string,
   password: string
@@ -41,7 +41,7 @@ export const loginUser = async (
   return res.data;
 };
 
-// 🔑 Signup function
+//  Signup function
 export const signupUser = async (
   name: string,
   emailId: string,
