@@ -82,7 +82,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
       onPageChange(newPage);
     }
   };
-  
 
   const getPageNumbers = () => {
     const delta = 2;
@@ -127,26 +126,53 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
   return (
     <div className="mt-6 px-4 sm:px-6 lg:px-8">
-      {/* Summary and Create Button */}
-      <div className="mb-4 text-sm text-muted-foreground flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <div className="mb-5">
-          Showing {Math.min((safePage - 1) * safeLimit + 1, safeTotal)} to{" "}
-          {Math.min(safePage * safeLimit, safeTotal)} of {safeTotal} users for
-          role <strong>{role.roleName}</strong>
+      {/* Header Section */}
+      <div className="relative overflow-hidden rounded-2xl p-4 mb-8 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white shadow-2xl shadow-indigo-500/25">
+        <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-xl font-bold mb-1">
+                Users in {role.roleName}
+              </h2>
+              <p className="text-white/90 text-sm">
+                Showing {Math.min((safePage - 1) * safeLimit + 1, safeTotal)} to{" "}
+                {Math.min(safePage * safeLimit, safeTotal)} of {safeTotal} users
+              </p>
+            </div>
+          </div>
+
+          {canEditDeleteCreate && (
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-1">
+              <CreateAndUpdate
+                selectedRoleId={role.id}
+                onUserUpdated={() => {
+                  setUserToEdit(null);
+                  refreshPage();
+                }}
+              />
+            </div>
+          )}
         </div>
-        {canEditDeleteCreate && (
-          <CreateAndUpdate
-            onUserUpdated={() => {
-              setUserToEdit(null);
-              refreshPage();
-            }}
-          />
-        )}
       </div>
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <Table className="min-w-full">
+        <Table className="min-w-[880px]">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -252,6 +278,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
       {userToEdit && (
         <CreateAndUpdate
           userToEdit={userToEdit}
+          selectedRoleId={role.id}
           onUserUpdated={() => {
             setUserToEdit(null);
             refreshPage(); // Refresh page after update

@@ -24,6 +24,7 @@ import { Eye, EyeOff } from "lucide-react";
 interface CreateAndUpdateProps {
   userToEdit?: User | null;
   onUserUpdated?: () => void;
+  selectedRoleId?: number;
 }
 
 interface UserPayload {
@@ -38,7 +39,8 @@ interface UserPayload {
   joinedDate?: string;
   password: string;
 }
-function CreateAndUpdate({ userToEdit, onUserUpdated }: CreateAndUpdateProps) {
+
+function CreateAndUpdate({ userToEdit, onUserUpdated, selectedRoleId }: CreateAndUpdateProps) {
   const [roles, setRoles] = useState<Role[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [showPassword, setShowPassword] = useState(false);
@@ -50,7 +52,7 @@ function CreateAndUpdate({ userToEdit, onUserUpdated }: CreateAndUpdateProps) {
 
   const initialForm = {
     name: "",
-    roleId: "",
+    roleId: selectedRoleId?.toString() ?? "", // Convert to string and handle undefined
     deptId: "",
     phoneNumber: "",
     emailId: "",
@@ -222,6 +224,7 @@ function CreateAndUpdate({ userToEdit, onUserUpdated }: CreateAndUpdateProps) {
                   onChange={handleChange}
                   className="border rounded p-2"
                   required
+                  disabled={!!selectedRoleId} 
                 >
                   <option value="">Select a role</option>
                   {roles.map((role) => (
